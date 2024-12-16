@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="JMix_Nghia">
+        <dropForeignKeyConstraint baseTableName="STUDENT_ENTITY_CLASS_ENTITY_LINK"
+                                  constraintName="FK_STUENTCLAENT_ON_CLASS_ENTITY"/>
+    </changeSet>
+    <changeSet id="2" author="JMix_Nghia">
+        <dropForeignKeyConstraint baseTableName="STUDENT_ENTITY_CLASS_ENTITY_LINK"
+                                  constraintName="FK_STUENTCLAENT_ON_STUDENT_ENTITY"/>
+    </changeSet>
+    <changeSet id="3" author="JMix_Nghia">
+        <createTable tableName="CLASS_ENTITY_STUDENT_ENTITY_LINK">
+            <column name="CLASS_ENTITY_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CLASS_ENTITY_STUDENT_ENTITY_LINK"/>
+            </column>
+            <column name="STUDENT_ENTITY_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CLASS_ENTITY_STUDENT_ENTITY_LINK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="4" author="JMix_Nghia">
+        <addForeignKeyConstraint baseColumnNames="CLASS_ENTITY_ID" baseTableName="CLASS_ENTITY_STUDENT_ENTITY_LINK"
+                                 constraintName="FK_CLAENTSTUENT_ON_CLASS_ENTITY" referencedColumnNames="ID"
+                                 referencedTableName="CLASS_ENTITY"/>
+    </changeSet>
+    <changeSet id="5" author="JMix_Nghia">
+        <addForeignKeyConstraint baseColumnNames="STUDENT_ENTITY_ID" baseTableName="CLASS_ENTITY_STUDENT_ENTITY_LINK"
+                                 constraintName="FK_CLAENTSTUENT_ON_STUDENT_ENTITY" referencedColumnNames="ID"
+                                 referencedTableName="STUDENT_ENTITY"/>
+    </changeSet>
+    <changeSet id="6" author="JMix_Nghia">
+        <dropTable cascadeConstraints="true" tableName="STUDENT_ENTITY_CLASS_ENTITY_LINK"/>
+    </changeSet>
+</databaseChangeLog>

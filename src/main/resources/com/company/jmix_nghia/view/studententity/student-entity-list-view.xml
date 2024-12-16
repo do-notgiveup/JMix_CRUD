@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      xmlns:c="http://jmix.io/schema/flowui/jpql-condition"
+      title="msg://studentEntityListView.title"
+      focusComponent="studentEntitiesDataGrid">
+    <data>
+        <collection id="studentEntitiesDc"
+                    class="com.company.jmix_nghia.entity.StudentEntity">
+            <fetchPlan extends="_base">
+                <property name="classes" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="studentEntitiesDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from StudentEntity e]]>
+                </query>
+            </loader>
+        </collection>
+        <instance id="studentEntityDc"
+                  class="com.company.jmix_nghia.entity.StudentEntity">
+            <fetchPlan extends="_base">
+                <property name="classes" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="studentEntityDl"/>
+            <collection id="classesDc" property="classes"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <genericFilter component="genericFilter"/>
+            <pagination component="pagination"/>
+        </urlQueryParameters>
+    </facets>
+    <actions>
+        <action id="selectAction" type="lookup_select"/>
+        <action id="discardAction" type="lookup_discard"/>
+    </actions>
+    <layout padding="false">
+        <formLayout id="layoutWrapper" classNames="master-detail-layout" height="100%">
+            <vbox id="listLayout" height="100%">
+                <genericFilter id="genericFilter"
+                               dataLoader="studentEntitiesDl">
+                    <properties include=".*"/>
+                </genericFilter>
+                <hbox id="buttonsPanel" classNames="buttons-panel">
+                    <button id="detailButton" action="studentEntitiesDataGrid.read" text="Detail"/>
+                    <button id="createButton" action="studentEntitiesDataGrid.create"/>
+                    <button id="editButton" action="studentEntitiesDataGrid.edit" visible="false"/>
+                    <button id="removeButton" action="studentEntitiesDataGrid.remove"/>
+                    <simplePagination id="pagination" dataLoader="studentEntitiesDl"/>
+                </hbox>
+                <dataGrid id="studentEntitiesDataGrid"
+                          width="100%"
+                          minHeight="20em"
+                          dataContainer="studentEntitiesDc"
+                          columnReorderingAllowed="true">
+                    <actions>
+                        <action id="create" type="list_create"/>
+                        <action id="edit" type="list_edit"/>
+                        <action id="remove" type="list_remove"/>
+                        <action id="read" type="list_edit"/>
+                    </actions>
+                    <columns resizable="true">
+                        <column property="studentCode"/>
+                        <column property="name"/>
+                        <column property="birthday"/>
+                        <column property="cccd"/>
+                        <column property="address"/>
+                        <column property="phoneNumber"/>
+                    </columns>
+                </dataGrid>
+                <hbox id="lookupActions" visible="false">
+                    <button id="selectButton" action="selectAction"/>
+                    <button id="discardButton" action="discardAction"/>
+                </hbox>
+            </vbox>
+            <vbox id="detailsLayout" height="100%">
+                <formLayout id="form" dataContainer="studentEntityDc">
+                    <responsiveSteps>
+                        <responsiveStep minWidth="0" columns="1"/>
+                        <responsiveStep minWidth="40em" columns="2"/>
+                    </responsiveSteps>
+                    <textField id="studentCodeField" property="studentCode"/>
+                    <textField id="nameField" property="name"/>
+                    <datePicker id="birthdayField" property="birthday"/>
+                    <textField id="cccdField" property="cccd"/>
+                    <textField id="addressField" property="address"/>
+                    <textField id="phoneNumberField" property="phoneNumber"/>
+                </formLayout>
+                <hbox id="detailActions">
+                    <button id="saveButton" text="msg:///actions.Save" icon="CHECK" themeNames="primary"/>
+                    <button id="cancelButton" text="msg:///actions.Cancel" icon="BAN"/>
+                </hbox>
+            </vbox>
+        </formLayout>
+    </layout>
+</view>

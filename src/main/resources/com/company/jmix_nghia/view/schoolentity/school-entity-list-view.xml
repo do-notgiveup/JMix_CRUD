@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      xmlns:c="http://jmix.io/schema/flowui/jpql-condition"
+      title="msg://schoolEntityListView.title"
+      focusComponent="schoolEntitiesDataGrid">
+    <data>
+        <collection id="schoolEntitiesDc"
+                    class="com.company.jmix_nghia.entity.SchoolEntity">
+            <fetchPlan extends="_base">
+                <property name="classes" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="schoolEntitiesDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from SchoolEntity e]]>
+                </query>
+            </loader>
+        </collection>
+        <instance id="schoolEntityDc"
+                  class="com.company.jmix_nghia.entity.SchoolEntity">
+            <fetchPlan extends="_base">
+                <property name="classes" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="schoolEntityDl"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <genericFilter component="genericFilter"/>
+            <pagination component="pagination"/>
+        </urlQueryParameters>
+    </facets>
+    <actions>
+        <action id="selectAction" type="lookup_select"/>
+        <action id="discardAction" type="lookup_discard"/>
+    </actions>
+    <layout padding="false">
+        <formLayout id="layoutWrapper" classNames="master-detail-layout" height="100%">
+            <vbox id="listLayout" height="100%">
+                <genericFilter id="genericFilter"
+                               dataLoader="schoolEntitiesDl">
+                    <properties include=".*"/>
+                </genericFilter>
+                <hbox id="buttonsPanel" classNames="buttons-panel">
+                    <button id="createButton" action="schoolEntitiesDataGrid.create"/>
+                    <button id="editButton" action="schoolEntitiesDataGrid.edit"/>
+                    <button id="removeButton" action="schoolEntitiesDataGrid.remove"/>
+                    <button id="searchButton" action="schoolEntitiesDataGrid.refreshAction" text="Search"
+                            icon="vaadin:search"/>
+                    <simplePagination id="pagination" dataLoader="schoolEntitiesDl"/>
+                </hbox>
+                <dataGrid id="schoolEntitiesDataGrid"
+                          width="100%"
+                          minHeight="20em"
+                          dataContainer="schoolEntitiesDc"
+                          columnReorderingAllowed="true">
+                    <actions>
+                        <action id="create" type="list_create"/>
+                        <action id="edit" type="list_edit"/>
+                        <action id="remove" type="list_remove"/>
+                        <action id="refreshAction" type="list_refresh"/>
+                    </actions>
+                    <columns resizable="true">
+                        <column property="schoolCode"/>
+                        <column property="name"/>
+                    </columns>
+                </dataGrid>
+                <hbox id="lookupActions" visible="false">
+                    <button id="selectButton" action="selectAction"/>
+                    <button id="discardButton" action="discardAction"/>
+                </hbox>
+            </vbox>
+            <vbox id="detailsLayout" height="100%">
+                <formLayout id="form" dataContainer="schoolEntityDc">
+                    <responsiveSteps>
+                        <responsiveStep minWidth="0" columns="1"/>
+                        <responsiveStep minWidth="40em" columns="2"/>
+                    </responsiveSteps>
+                    <textField id="schoolCodeField" property="schoolCode"/>
+                    <textField id="nameField" property="name"/>
+                </formLayout>
+                <hbox id="detailActions">
+                    <button id="saveButton" text="msg:///actions.Save" icon="CHECK" themeNames="primary"/>
+                    <button id="cancelButton" text="msg:///actions.Cancel" icon="BAN"/>
+                </hbox>
+            </vbox>
+        </formLayout>
+    </layout>
+</view>

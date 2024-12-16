@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="JMix_Nghia">
+        <dropForeignKeyConstraint baseTableName="CLASS_ENTITY_STUDENT_ENTITY_LINK"
+                                  constraintName="FK_CLAENTSTUENT_ON_CLASS_ENTITY"/>
+    </changeSet>
+    <changeSet id="2" author="JMix_Nghia">
+        <dropForeignKeyConstraint baseTableName="CLASS_ENTITY_STUDENT_ENTITY_LINK"
+                                  constraintName="FK_CLAENTSTUENT_ON_STUDENT_ENTITY"/>
+    </changeSet>
+    <changeSet id="3" author="JMix_Nghia">
+        <addUniqueConstraint columnNames="CCCD" constraintName="IDX_STUDENT_ENTITY_UNQ" tableName="STUDENT_ENTITY"/>
+    </changeSet>
+    <changeSet id="4" author="JMix_Nghia">
+        <dropTable cascadeConstraints="true" tableName="CLASS_ENTITY_STUDENT_ENTITY_LINK"/>
+    </changeSet>
+</databaseChangeLog>

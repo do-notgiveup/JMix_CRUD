@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu-config xmlns="http://jmix.io/schema/flowui/menu">
+
+    <menu id="application" title="msg://com.company.jmix_nghia/menu.application.title" opened="true">
+        <item view="User.list" title="msg://com.company.jmix_nghia.view.user/UserListView.title"/>
+        <item view="StudentEntity.list"
+              title="msg://com.company.jmix_nghia.view.studententity/studentEntityListView.title"/>
+        <item view="ClassEntity.list" title="msg://com.company.jmix_nghia.view.classentity/classEntityListView.title"/>
+        <item view="TeacherEntity.list"
+              title="msg://com.company.jmix_nghia.view.teacherentity/teacherEntityListView.title"/>
+        <item view="SchoolEntity.list"
+              title="msg://com.company.jmix_nghia.view.schoolentity/schoolEntityListView.title"/>
+        <item view="SubjectEntity.list"
+              title="msg://com.company.jmix_nghia.view.subjectentity/subjectEntityListView.title"/>
+    </menu>
+
+</menu-config>

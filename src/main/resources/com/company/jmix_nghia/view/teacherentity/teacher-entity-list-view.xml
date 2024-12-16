@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      xmlns:c="http://jmix.io/schema/flowui/jpql-condition"
+      title="msg://teacherEntityListView.title"
+      focusComponent="teacherEntitiesDataGrid">
+    <data>
+        <collection id="teacherEntitiesDc"
+                    class="com.company.jmix_nghia.entity.TeacherEntity">
+            <fetchPlan extends="_base">
+                <property name="classes" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="teacherEntitiesDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from TeacherEntity e]]>
+                </query>
+            </loader>
+        </collection>
+        <instance id="teacherEntityDc"
+                  class="com.company.jmix_nghia.entity.TeacherEntity">
+            <fetchPlan extends="_base">
+                <property name="classes" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="teacherEntityDl"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <genericFilter component="genericFilter"/>
+            <pagination component="pagination"/>
+        </urlQueryParameters>
+    </facets>
+    <actions>
+        <action id="selectAction" type="lookup_select"/>
+        <action id="discardAction" type="lookup_discard"/>
+    </actions>
+    <layout padding="false">
+        <formLayout id="layoutWrapper" classNames="master-detail-layout" height="100%">
+            <vbox id="listLayout" height="100%">
+                <genericFilter id="genericFilter"
+                               dataLoader="teacherEntitiesDl">
+                    <properties include=".*"/>
+                </genericFilter>
+                <hbox id="buttonsPanel" classNames="buttons-panel">
+                    <button id="createButton" action="teacherEntitiesDataGrid.create"/>
+                    <button id="editButton" action="teacherEntitiesDataGrid.edit"/>
+                    <button id="removeButton" action="teacherEntitiesDataGrid.remove"/>
+                    <simplePagination id="pagination" dataLoader="teacherEntitiesDl"/>
+                </hbox>
+                <dataGrid id="teacherEntitiesDataGrid"
+                          width="100%"
+                          minHeight="20em"
+                          dataContainer="teacherEntitiesDc"
+                          columnReorderingAllowed="true">
+                    <actions>
+                        <action id="create" type="list_create"/>
+                        <action id="edit" type="list_edit"/>
+                        <action id="remove" type="list_remove"/>
+                    </actions>
+                    <columns resizable="true">
+                        <column property="name"/>
+                        <column property="age"/>
+                        <column property="address"/>
+                        <column property="phoneNumber"/>
+                    </columns>
+                </dataGrid>
+                <hbox id="lookupActions" visible="false">
+                    <button id="selectButton" action="selectAction"/>
+                    <button id="discardButton" action="discardAction"/>
+                </hbox>
+            </vbox>
+            <vbox id="detailsLayout" height="100%">
+                <formLayout id="form" dataContainer="teacherEntityDc">
+                    <responsiveSteps>
+                        <responsiveStep minWidth="0" columns="1"/>
+                        <responsiveStep minWidth="40em" columns="2"/>
+                    </responsiveSteps>
+                    <textField id="nameField" property="name"/>
+                    <textField id="ageField" property="age"/>
+                    <textField id="addressField" property="address"/>
+                    <textField id="phoneNumberField" property="phoneNumber"/>
+                </formLayout>
+                <hbox id="detailActions">
+                    <button id="saveButton" text="msg:///actions.Save" icon="CHECK" themeNames="primary"/>
+                    <button id="cancelButton" text="msg:///actions.Cancel" icon="BAN"/>
+                </hbox>
+            </vbox>
+        </formLayout>
+    </layout>
+</view>
