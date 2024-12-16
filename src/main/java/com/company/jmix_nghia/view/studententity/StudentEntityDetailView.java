@@ -7,7 +7,6 @@ import com.company.jmix_nghia.view.subjectentity.SubjectEntityDetailView;
 import com.vaadin.flow.router.Route;
 import io.jmix.flowui.DialogWindows;
 import io.jmix.flowui.component.grid.DataGrid;
-import io.jmix.flowui.exception.ValidationException;
 import io.jmix.flowui.kit.action.ActionPerformedEvent;
 import io.jmix.flowui.model.CollectionPropertyContainer;
 import io.jmix.flowui.model.InstanceLoader;
@@ -63,15 +62,16 @@ public class StudentEntityDetailView extends StandardDetailView<StudentEntity> {
 
         window.addAfterCloseListener(afterCloseEvent -> {
             if (afterCloseEvent.closedWith(StandardOutcome.SAVE)) {
-//                colCOOwnerListDc.getMutableItems().forEach(colCOOwnerList -> {
-//                    getEditedEntity().getColCOOwnerList().stream().filter(
-//                            coOwnerList -> coOwnerList.getCOCusCode().getCusCode().equals(window.getView().getEditedEntity().getCOCusCode().getCusCode()) && !coOwnerList.equals(window.getView().getEditedEntity())
-//                    ).findFirst().ifPresent(colTransactionDetail -> {
-//                        throw new ValidationException(String.format(messages.getMessage(CONST.ERROR_GROUP, "0114000014"), window.getView().getEditedEntity().getCOCusCode().getCusCode()));
-//                    });
-//                });
+                subjectEntitiesDc.getMutableItems().forEach(subjectList -> {
+                    getEditedEntity().getSubjects().stream().filter(
+                            sjList -> sjList.getId().equals(window.getView().getEditedEntity().getId()) && !sjList.equals(window.getView().getEditedEntity())
+                    ).findFirst().ifPresent(sjDetail -> {
+//
+                    });
+                });
                 subjectEntitiesDc.getMutableItems().remove(subjectEntitiesDataGrid.getSingleSelectedItem());
                 subjectEntitiesDc.getMutableItems().add(window.getView().getEditedEntity());
+
             }
 
         });

@@ -47,6 +47,8 @@
                     <button id="createButton" action="studentEntitiesDataGrid.create"/>
                     <button id="editButton" action="studentEntitiesDataGrid.edit" visible="false"/>
                     <button id="removeButton" action="studentEntitiesDataGrid.remove"/>
+                    <button id="searchButton" action="studentEntitiesDataGrid.refreshAction" text="Search"
+                            icon="vaadin:search"/>
                     <simplePagination id="pagination" dataLoader="studentEntitiesDl"/>
                 </hbox>
                 <dataGrid id="studentEntitiesDataGrid"
@@ -59,6 +61,7 @@
                         <action id="edit" type="list_edit"/>
                         <action id="remove" type="list_remove"/>
                         <action id="read" type="list_edit"/>
+                        <action id="refreshAction" type="list_refresh"/>
                     </actions>
                     <columns resizable="true">
                         <column property="studentCode"/>

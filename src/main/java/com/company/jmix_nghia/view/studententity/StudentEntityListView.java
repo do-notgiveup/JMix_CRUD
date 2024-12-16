@@ -13,6 +13,7 @@ import io.jmix.core.validation.group.UiCrossFieldChecks;
 import io.jmix.flowui.DialogWindows;
 import io.jmix.flowui.component.UiComponentUtils;
 import io.jmix.flowui.component.grid.DataGrid;
+import io.jmix.flowui.component.textfield.TypedTextField;
 import io.jmix.flowui.component.validation.ValidationErrors;
 import io.jmix.flowui.kit.action.ActionPerformedEvent;
 import io.jmix.flowui.kit.component.button.JmixButton;
@@ -21,6 +22,8 @@ import io.jmix.flowui.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Route(value = "studentEntities", layout = MainView.class)
 @ViewController(id = "StudentEntity.list")
@@ -54,6 +57,12 @@ public class StudentEntityListView extends StandardListView<StudentEntity> {
     private DialogWindows dialogWindows;
     @ViewComponent
     private DataGrid<StudentEntity> studentEntitiesDataGrid;
+    @ViewComponent
+    private TypedTextField<String> nameField;
+    @ViewComponent
+    private TypedTextField<String> studentCodeField;
+    @ViewComponent
+    private CollectionLoader<StudentEntity> studentEntitiesDl;
 
     @Subscribe
     public void onBeforeShow(final BeforeShowEvent event) {
@@ -76,6 +85,31 @@ public class StudentEntityListView extends StandardListView<StudentEntity> {
         StudentEntity entity = dataContext.create(StudentEntity.class);
         studentEntityDc.setItem(entity);
         updateControls(true);
+    }
+
+    @Subscribe("studentEntitiesDataGrid.refreshAction")
+    public void onStudentEntitiesDataGriRefresh(final ActionPerformedEvent event) {
+        String query = "select e from StudentEntity e where 1 = 1";
+        Map<String, Object> params = new HashMap<>();
+
+        if (nameField != null && !nameField.getValue().isEmpty()) {
+            query += " and e.name like concat('%', :nameField, '%')";
+            params.put("nameField", nameField.getValue());
+        }
+
+        if (studentCodeField != null && !studentCodeField.getValue().isEmpty()) {
+            query += " and e.studentCode like concat('%', :studentCodeField, '%')";
+            params.put("studentCodeField", studentCodeField.getValue());
+        }
+
+        // Sắp xếp kết quả theo `id`
+        query += " order by e.id desc";
+
+        // Đặt câu truy vấn và các tham số cho `DataLoader`
+        studentEntitiesDl.setQuery(query);
+        studentEntitiesDl.setParameters(params);
+        studentEntitiesDl.setFirstResult(0);
+        studentEntitiesDl.load();
     }
 
 //    @Subscribe("studentEntitiesDataGrid.edit")
@@ -131,7 +165,9 @@ public class StudentEntityListView extends StandardListView<StudentEntity> {
 
     private void updateControls(boolean editing) {
         UiComponentUtils.getComponents(form).forEach(component -> {
-            if (component instanceof HasValueAndElement<?, ?> field) {
+            if ((component instanceof HasValueAndElement<?, ?> field)
+                    && !(component.getId().get().equals("nameField") || component.getId().get().equals("studentCodeField"))
+            ) {
                 field.setReadOnly(!editing);
             }
         });
